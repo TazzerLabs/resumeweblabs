@@ -87,7 +87,8 @@ router.get('/edit2', function(req, res){
    if(req.query.company_id == null) {
        res.send('A company id is required');
    }
-   else {
+   else
+       {
        company_dal.getById(req.query.company_id, function(err, company){
            address_dal.getAll(function(err, address) {
                res.render('company/companyUpdate', {company: company[0], address: address});

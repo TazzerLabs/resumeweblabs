@@ -1,0 +1,11 @@
+<%- include("../includes/header.ejs", {title:"Address - " + result[0].street + ' ' + result[0].zip_code }); %>
+    <h1>Address</h1>
+    <ul>
+        <li>Street: <%= result[0].street %></li>
+        <br />
+        <li>Zip Code: <%= result[0].zip_code %></li>
+    </ul>
+
+<a href="/address/all"><< back</a>
+
+<%- include("../includes/footer.ejs"); %>

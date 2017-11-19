@@ -1,0 +1,19 @@
+<%- include("../includes/header.ejs", {title:"Add New Account"}); %>
+    <h1>Add New Account</h1>
+    <form action="/account/insert" method="get">
+        First Name: <input id="Fname" name="Fname" type="text" />
+        <br />
+        <br />
+        Last Name: <input id="Lname" name="Lname" type="text" />
+        <br />
+        <br />
+        Email: <input id="email" name="email" type="text" />
+        <br />
+        <br />
+        <input type="submit" />
+
+    </form>
+<br />
+<a href="/account/all"><< back</a>
+
+<%- include("../includes/footer.ejs"); %>

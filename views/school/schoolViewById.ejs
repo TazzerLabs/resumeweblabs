@@ -1,0 +1,16 @@
+<%- include("../includes/header.ejs", {title:"Companies - " + result[0].school_Name}); %>
+<h1>Schools</h1>
+<ul>
+    <li>School Name: <%= result[0].school_Name %></li>
+    <li>Address(es):
+        <ul>
+            <% for(var i=0; result.length > i; i++ ) { %>
+            <li><%= result[i].street + ', ' + result[i].zip_code %></li>
+            <% } %>
+        </ul>
+    </li>
+</ul>
+
+<a href="/school/all"><< back</a>
+
+<%- include("../includes/footer.ejs"); %>

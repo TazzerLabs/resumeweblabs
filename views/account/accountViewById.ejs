@@ -1,0 +1,13 @@
+<%- include("../includes/header.ejs", {title:"Account - " + result[0].Fname + ' ' + result[0].Lname }); %>
+    <h1>Account</h1>
+    <ul>
+        <li>First Name: <%= result[0].Fname %></li>
+        <br />
+        <li>Last Name: <%= result[0].Lname %></li>
+        <br />
+        <li>Email: <%= result[0].email %></li>
+    </ul>
+
+<a href="/account/all"><< back</a>
+
+<%- include("../includes/footer.ejs"); %>

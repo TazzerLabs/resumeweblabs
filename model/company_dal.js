@@ -33,14 +33,16 @@ exports.getById = function(company_id, callback) {
     });
 };
 
-exports.insert = function(params, callback) {
+exports.insert = function(params, callback)
+{
 
     // FIRST INSERT THE COMPANY
     var query = 'INSERT INTO company (company_name) VALUES (?)';
 
     var queryData = [params.company_name];
 
-    connection.query(query, params.company_name, function(err, result) {
+    connection.query(query, params.company_name, function(err, result)
+    {
 
         // THEN USE THE COMPANY_ID RETURNED AS insertId AND THE SELECTED ADDRESS_IDs INTO COMPANY_ADDRESS
         var company_id = result.insertId;
@@ -50,13 +52,8 @@ exports.insert = function(params, callback) {
 
         // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
         var companyAddressData = [];
-        if (params.address_id.constructor === Array) {
-            for (var i = 0; i < params.address_id.length; i++) {
-                companyAddressData.push([company_id, params.address_id[i]]);
-            }
-        }
-        else {
-            companyAddressData.push([company_id, params.address_id]);
+        for(var i=0; i < params.address_id.length; i++) {
+            companyAddressData.push([company_id, params.address_id[i]]);
         }
 
         // NOTE THE EXTRA [] AROUND companyAddressData
@@ -78,21 +75,22 @@ exports.delete = function(company_id, callback) {
 };
 
 //declare the function so it can be used locally
-var companyAddressInsert = function(company_id, addressIdArray, callback){
+var companyAddressInsert = function(company_id, addressIdArray, callback)
+{
+
     // NOTE THAT THERE IS ONLY ONE QUESTION MARK IN VALUES ?
     var query = 'INSERT INTO company_address (company_id, address_id) VALUES ?';
 
+
     // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
     var companyAddressData = [];
-    if (addressIdArray.constructor === Array) {
-        for (var i = 0; i < params.address_id.length; i++) {
-            companyAddressData.push([company_id, params.address_id[i]]);
-        }
+
+    for(var i=0; i < addressIdArray.length; i++)
+    {
+        companyAddressData.push([company_id, addressIdArray[i]]);
     }
-    else {
-        companyAddressData.push([company_id, params.address_id]);
-    }
-    connection.query(query, [companyAddressData], function(err, result){
+    connection.query(query, [companyAddressData], function(err, result)
+    {
         callback(err, result);
     });
 };

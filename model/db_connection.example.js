@@ -1,6 +1,9 @@
+/**
+ * Created by student on 4/26/17.
+ */
 exports.config = {
     user: '',
     password: '',
-    host: '',
+    host: 'blue.cs.sonoma.edu',
     database: ''
 };
