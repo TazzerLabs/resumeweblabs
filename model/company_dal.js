@@ -85,12 +85,12 @@ var companyAddressInsert = function(company_id, addressIdArray, callback){
     // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
     var companyAddressData = [];
     if (addressIdArray.constructor === Array) {
-        for (var i = 0; i < params.address_id.length; i++) {
-            companyAddressData.push([company_id, params.address_id[i]]);
+        for (var i = 0; i < addressIdArray.length; i++) {
+            companyAddressData.push([company_id, addressIdArray[i]]);
         }
     }
     else {
-        companyAddressData.push([company_id, params.address_id]);
+        companyAddressData.push([company_id, addressIdArray]);
     }
     connection.query(query, [companyAddressData], function(err, result){
         callback(err, result);
@@ -136,7 +136,7 @@ exports.update = function(params, callback) {
      DROP PROCEDURE IF EXISTS company_getinfo;
 
      DELIMITER //
-     CREATE PROCEDURE company_getinfo (company_id int)
+     CREATE PROCEDURE company_getinfo (_company_id int)
      BEGIN
 
      SELECT * FROM company WHERE company_id = _company_id;
