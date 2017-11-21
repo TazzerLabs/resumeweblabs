@@ -136,7 +136,7 @@ exports.update = function(params, callback) {
      DROP PROCEDURE IF EXISTS company_getinfo;
 
      DELIMITER //
-     CREATE PROCEDURE company_getinfo (company_id int)
+     CREATE PROCEDURE company_getinfo (_company_id int)
      BEGIN
 
      SELECT * FROM company WHERE company_id = _company_id;
