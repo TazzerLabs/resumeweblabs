@@ -85,9 +85,9 @@ var companyAddressInsert = function(company_id, addressIdArray, callback)
     // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
     var companyAddressData = [];
 
-    for(var i=0; i < addressIdArray.length; i++)
+    for (var i = 0; i < addressIdArray.length; i++)
     {
-        companyAddressData.push([company_id, addressIdArray[i]]);
+    companyAddressData.push([company_id, addressIdArray[i]]);
     }
     connection.query(query, [companyAddressData], function(err, result)
     {
@@ -134,7 +134,7 @@ exports.update = function(params, callback) {
      DROP PROCEDURE IF EXISTS company_getinfo;
 
      DELIMITER //
-     CREATE PROCEDURE company_getinfo (company_id int)
+     CREATE PROCEDURE company_getinfo (_company_id int)
      BEGIN
 
      SELECT * FROM company WHERE company_id = _company_id;

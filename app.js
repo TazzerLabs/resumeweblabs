@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var resume = require('./routes/resume_routes');
 var school = require('./routes/school_routes');
 var account = require('./routes/account_routes');
 var address = require('./routes/address_routes');
@@ -33,6 +34,7 @@ app.use('/account', account);
 app.use('/address', address);
 app.use('/company', company);
 app.use('/skill', skill);
+app.use('/resume', resume);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
