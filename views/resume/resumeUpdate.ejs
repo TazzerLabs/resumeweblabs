@@ -1,33 +1,37 @@
 <%- include("../includes/header.ejs", {title:"Add New Resume"}); %>
-<h1>Add New Resume</h1>
-<form action="/resume/insert" method="POST">
-    <input type="hidden" id="account_id" name="account_id" value="<%= account_id %>">
+<h1>Update Resume </h1>
+
+<% if (locals.was_successful) { %>
+<div class=""col-md-12">
+<div id=""message" class="alert alert-success col-md-4">
+<%= resume[0].resume_name %> was successfully saved
+</div>
+</div>
+<% } %>
+
+<form action="/resume/update" method="post">
+    <input type="hidden" id="resume_id" name="resume_id" value="<%= resume.resume_id %>">
     Resume Name: <input id="resume_name" name="resume_name" type="text" />
     <br />
-    <br />
-    <br />
-    School
+    Schools:
     <br />
     <select id="school_id" name="school_id" multiple="multiple">
         <% for(var i=0; school.length > i; i++ ) { %>
-        <option value="<%= school[i].school_id %>"><%= school[i].school_Name %></option>
+        <option value="<%= school[i].school_id %>" > <%= school[i].school_Name%> </option>
         <% } %>
     </select>
-
+    <br />
+    Companies:
+    <br />
     <!-- Initialize the multiselect plugin: -->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#school_id').multiselect();
         });
     </script>
-    <br />
-    <br />
-    <br />
-    Company
-    <br />
     <select id="company_id" name="company_id" multiple="multiple">
-        <% for(var i=0; i < company.length; i++ ) { %>
-        <option value="<%= company[i].company_id %>"><%= company[i].company_name %></option>
+        <% for(var a=0; company.length > a; a++ ) { %>
+        <option value="<%= company[a].company_id %>" > <%= company[a].company_name%> </option>
         <% } %>
     </select>
 
@@ -37,14 +41,13 @@
             $('#company_id').multiselect();
         });
     </script>
+
     <br />
-    <br />
-    <br />
-    Skill
+    skill:
     <br />
     <select id="skill_id" name="skill_id" multiple="multiple">
-        <% for(var i = 0; i < skill.length; i++) { %>
-        <option value="<%= skill[i].skill_id %>"><%= skill[i].skill_name %></option>
+        <% for(var i=0; skill.length > i; i++ ) { %>
+        <option value="<%= skill[i].skill_id %>" > <%= skill[i].skill_name%> </option>
         <% } %>
     </select>
 
@@ -54,18 +57,11 @@
             $('#skill_id').multiselect();
         });
     </script>
-
     <br />
-    <br />
-
     <input type="submit" />
 
 </form>
+<footer>
 
-<br />
-<br />
-
-<a href="/resume/all"><< back</a>
-
-
+</footer>
 <%- include("../includes/footer.ejs"); %>

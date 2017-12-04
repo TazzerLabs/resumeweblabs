@@ -72,7 +72,7 @@ router.get('/insert', function(req, res){
 
 router.get('/edit', function(req, res){
     if(req.query.skill_id == null) {
-        res.send('An account id is required');
+        res.send('An skill id is required');
     }
     else {
         skill_dal.edit(req.query.skill_id, function(err, result){

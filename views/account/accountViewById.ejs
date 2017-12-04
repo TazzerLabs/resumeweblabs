@@ -1,11 +1,26 @@
-<%- include("../includes/header.ejs", {title:"Account - " + result[0].Fname + ' ' + result[0].Lname }); %>
-    <h1>Account</h1>
+<%- include("../includes/header.ejs", {title:"Account - " + account.Fname + " " + account.Lname}); %>
+    <h1>Accounts</h1>
     <ul>
-        <li>First Name: <%= result[0].Fname %></li>
-        <br />
-        <li>Last Name: <%= result[0].Lname %></li>
-        <br />
-        <li>Email: <%= result[0].email %></li>
+        <li>Account Name: <%= account.Fname %> <%= account.Lname %></li>
+        <li>Email: <%= account.email %></li>
+        <li>Schools: </li>
+        <ol>
+            <% for (var i = 0; i < account_school.length; i++) { %>
+                <li><%= account_school[i].school_Name %></li>
+            <% } %>
+        </ol>
+        <li>Companies: </li>
+        <ol>
+            <% for (var i = 0; i < account_company.length; i++) { %>
+                <li><%= account_company[i].company_name %></li>
+            <% } %>
+        </ol>
+        <li>Skills:</li>
+        <ol>
+            <% for (var i = 0; i < account_skill.length; i++) { %>
+                <li><%= account_skill[i].skill_name %></li>
+            <% } %>
+        </ol>
     </ul>
 
 <a href="/account/all"><< back</a>

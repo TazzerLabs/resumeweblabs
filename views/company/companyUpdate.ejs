@@ -1,6 +1,16 @@
 <%- include("../includes/header.ejs", {title: "Update " + company.company_name}); %>
 
-<h1>Update <%= company.company_name%></h1>
+<h1>Update <%= company.company_name%>
+
+    <% if(locals.was_successful) { %>
+    <div class="col-md-12">
+        <div id="message" class="alert alert-success col-md-4">
+            <%= company.company_name %> was successfully saved. %>
+        </div>
+    </div>
+    <% } %>
+
+</h1>
 <form action="/company/update" method="get">
     <input type="hidden" id="company_id" name="company_id" value="<%= company.company_id %>">
     Company Name: <input id="company_name" name="company_name" type="text" value="<%= company.company_name%>"/>
@@ -32,9 +42,8 @@
 
 </form>
 
-<%- include("../includes/footer.ejs"); %>
-
-<br />
 <a href="/company/all"><< back</a>
+
+<%- include("../includes/footer.ejs"); %>
 
 </html>

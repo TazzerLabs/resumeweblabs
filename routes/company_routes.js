@@ -58,14 +58,16 @@ router.get('/insert', function(req, res){
     }
     else {
         // passing all the query parameters (req.query) to the insert function instead of each individually
-        company_dal.insert(req.query, function(err,result) {
+        company_dal.insert(req.query, function(err,company_id) {
             if (err) {
-                console.log(err)
+                //console.log(err)
                 res.send(err);
             }
             else {
                 //poor practice for redirecting the user to a different page, but we will handle it differently once we start using Ajax
-                res.redirect(302, '/company/all');
+                company_dal.edit(company_id, function (err, result) {
+                    res.render('company/companyUpdate', {company: result[0][0], address: result[1]});
+                });
             }
         });
     }
@@ -77,7 +79,7 @@ router.get('/edit', function(req, res){
     }
     else {
         company_dal.edit(req.query.company_id, function(err, result){
-            res.render('company/companyUpdate', {company: result[0][0], address: result[1]});
+            res.render('company/companyUpdate', {company: result[0][0], address: result[1], was_successful: true});
         });
     }
 
@@ -87,8 +89,7 @@ router.get('/edit2', function(req, res){
    if(req.query.company_id == null) {
        res.send('A company id is required');
    }
-   else
-       {
+   else {
        company_dal.getById(req.query.company_id, function(err, company){
            address_dal.getAll(function(err, address) {
                res.render('company/companyUpdate', {company: company[0], address: address});
