@@ -14,7 +14,7 @@
         School:
         <br />
         <select id="school_id" name="school_id" multiple="multiple">
-            <% for (var i = 0; i < school.length; i++) { %>
+            <% for (var i = 0; i < school.length-1; i++) { %>
                 <option value="<%= school[i].school_id %>"><%= school[i].school_Name %></option>
             <% } %>
         </select>
