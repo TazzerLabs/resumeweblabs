@@ -1,4 +1,4 @@
-// Last edited 12/7/17
+//  edited 12/7/17
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
