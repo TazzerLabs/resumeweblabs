@@ -1,19 +1,13 @@
 <%- include("../includes/header.ejs", {title:"Add New Resume"}); %>
-<h1>Update Resume </h1>
-
-<% if (locals.was_successful) { %>
-<div class=""col-md-12">
-<div id=""message" class="alert alert-success col-md-4">
-<%= resume[0].resume_name %> was successfully saved
-</div>
-</div>
-<% } %>
+<h1>Update Resume: <%= resume[0].resume_name %> </h1>
 
 <form action="/resume/update" method="post">
-    <input type="hidden" id="resume_id" name="resume_id" value="<%= resume.resume_id %>">
-    Resume Name: <input id="resume_name" name="resume_name" type="text" />
+    <input type="hidden" id="resume_id" name="resume_id" value="<%= resume[0].resume_id %>">
+    Resume Name: <input id="resume_name" name="resume_name" type="text" value="<%= resume[0].resume_name %>" />
+    <br />
     <br />
     Schools:
+    <br />
     <br />
     <select id="school_id" name="school_id" multiple="multiple">
         <% for(var i=0; school.length > i; i++ ) { %>
@@ -21,7 +15,9 @@
         <% } %>
     </select>
     <br />
+    <br />
     Companies:
+    <br />
     <br />
     <!-- Initialize the multiselect plugin: -->
     <script type="text/javascript">
@@ -43,7 +39,9 @@
     </script>
 
     <br />
+    <br />
     skill:
+    <br />
     <br />
     <select id="skill_id" name="skill_id" multiple="multiple">
         <% for(var i=0; skill.length > i; i++ ) { %>
@@ -57,6 +55,7 @@
             $('#skill_id').multiselect();
         });
     </script>
+    <br />
     <br />
     <input type="submit" />
 
