@@ -87,45 +87,38 @@ exports.edit = function(resume_id, callback) {
     var query = 'SELECT account_id FROM resume WHERE resume_id = ?';
     var queryData = [resume_id];
 
-    connection.query(query, queryData, function(err, result){
+    connection.query(query, queryData, function(err, result) {
         if(err) {
             callback(err, null);
         }
         else {
-            // Get account info from the return account_id
-            exports.AccountInfo(result[0].account_id, function(err, result){
+
+            var query = "CALL resume_getinfo(?)";
+            connection.query(query, [resume_id], function (err, result) {
+
+                if (err)
+                {
+                    console.log(err);
+                    callback(err, null);
+                }
+                else
+                {
 
                 // all values that the current account has
                 // for company, school, and skill Father showed multi variable inside 1 var.
                 var InfoEdit =
                     {
-                        account: result[0][0],
-                        account_company: result[1],
-                        account_school: result[2],
-                        account_skill: result[3]
+                        resume: result[0],
+                        company: result[1],
+                        school: result[2],
+                        skill: result[3]
                      };
-
-                // query for the given resume_id
-                var query = "CALL resume_getinfo(?)";
-                connection.query(query, [resume_id], function (err, result) {
-                    if (err)
-                    {
-                        console.log(err);
-                        callback(err, null);
-                    }
-                    else
-                    {
-
-                        InfoEdit.resume = result[0];
-                        InfoEdit.resume_company = result[1];
-                        InfoEdit.resume_school = result[2];
-                        InfoEdit.resume_skill = result[3];
                         callback(err, InfoEdit);
-                    }
-                });
-
+                }
             });
+
         }
+
     });
 };
 
@@ -137,64 +130,135 @@ exports.delete = function(resume_id, callback) {
     });
 };
 
-// Father showed how to have var with how professor had it but used when
+//Deletes
+var deletecompany = function(resume_id, callback) {
+    var query = "DELETE FROM resume_company " +
+        "WHERE resume_id = ?";
+    connection.query(query, [resume_id], function(err, result){
+        callback(err, result);
+    });
+};
+var deleteschools = function(resume_id, callback) {
+    var query = "DELETE FROM resume_school " +
+        "WHERE resume_id = ?";
+    connection.query(query, [resume_id], function(err, result){
+        callback(err, result);
+    });
+};
+var deleteskills= function(resume_id, callback) {
+    var query = "DELETE FROM resume_skill " +
+        "WHERE resume_id = ?";
+    connection.query(query, [resume_id], function(err, result){
+        callback(err, result);
+    });
+};
 
-var insertCompanies = function(companies, callback) {
+// Inserts
+var insertcompany = function(company, callback) {
     var query = "INSERT INTO resume_company (resume_id, company_id) VALUES ?";
-    connection.query(query, [companies], function (err, result) {
+    connection.query(query, [company], function(err, result){
         callback(err, result);
     });
 };
-var insertSchools = function(schools, callback) {
+var insertschools = function(schools, callback) {
     var query = "INSERT INTO resume_school (resume_id, school_id) VALUES ?";
-    connection.query(query, [schools], function (err, result) {
+    connection.query(query, [schools], function(err, result){
         callback(err, result);
     });
 };
-var insertSkills = function(skills, callback) {
+var insertskills= function(skills, callback) {
     var query = "INSERT INTO resume_skill (resume_id, skill_id) VALUES ?";
-    connection.query(query, [skills], function (err, result) {
+    connection.query(query, [skills], function(err, result){
         callback(err, result);
     });
 };
 
 exports.update = function(params, callback) {
+    console.log("Update has params:\n", params);
+    var query = "UPDATE resume SET resume_name = ? " +
+        "WHERE resume_id = ?";
+    var resumeData = [params.resume_name, params.resume_id];
+    var resume_id = params.resume_id;
+    connection.query(query, resumeData, function(err, result){
+        if (err)
+            callback(err, null);
+        else {
 
-    var query =  "UPDATE resume SET resume_name = ? WHERE resume_id = ?";
-    var queryData = [params.resume_name, params.resume_id];
-    connection.query(query, queryData, function (err, result) {
-
-        var resume_id = params.resume_id;
-
-        var resumeCompanyData = [];
-        // Only loop through if there are multiple resume_company's
-        if (params.resume_company.constructor === Array) {
-            for (var i = 0; i < params.resume_company.length; i++) {
-                resumeCompanyData.push([resume_id, params.resume_company[i]]);
+            var resumecompanyData = [];
+            if (params.company_id != null) {
+                for (var i = 0; i < params.company_id.length; i++) {
+                    resumecompanyData.push([resume_id, params.company_id[i]]);
+                }
             }
-        } else {
-            resumeCompanyData.push([resume_id, params.resume_company]);
-        }
-
-        var resumeschoolData = [];
-        // Only loop through if there are multiple resume_school's
-        if (params.resume_school.constructor === Array) {
-            for (var i = 0; i < params.resume_school.length; i++) {
-                resumeschoolData.push([resume_id, params.resume_school[i]]);
+            var resumeschoolData = [];
+            if (params.school_id != null) {
+                for (var i = 0; i < params.school_id.length; i++) {
+                    resumeschoolData.push([resume_id, params.school_id[i]]);
+                }
             }
-        } else {
-            resumeschoolData.push([resume_id, params.resume_school]);
-        }
-
-        var resumeskillData = [];
-        // Only loop through if there are multiple resume_skill's
-        if (params.resume_skill.constructor === Array) {
-            for (var i = 0; i < params.resume_skill.length; i++) {
-                resumeskillData.push([resume_id, params.resume_skill[i]]);
+            var resumeskillData = [];
+            if (params.skill_id != null) {
+                for (var i = 0; i < params.skill_id.length; i++) {
+                    resumeskillData.push([resume_id, params.skill_id[i]]);
+                }
             }
-        } else {
-            resumeskillData.push([resume_id, params.resume_skill]);
-        }
 
+            /*
+             * KNOWN BUG: if any of the categories have nothing,
+             * there is a MySQL parse error, since we try INSERT INTO
+             * with values of ''.
+             *
+             */
+
+            //1. Delete all company from the user
+            deletecompany(resume_id, function(err, resul) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null);
+                } else {
+                    //2. Re-insert all selected company
+                    insertcompany(resumecompanyData, function (err, resul) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, null);
+                        } else {
+                            //3. Delete all schools from the user
+                            deleteschools(resume_id, function(err, resul) {
+                                if (err) {
+                                    console.log(err);
+                                    callback(err, null);
+                                } else {
+                                    //4. Re-insert all selected schools
+                                    insertschools(resumeschoolData, function (err, resul) {
+                                        if (err) {
+                                            console.log(err);
+                                            callback(err, null);
+                                        } else {
+                                            //5. Delete all skills from the user
+                                            deleteskills(resume_id, function(err, resul) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    callback(err, null);
+                                                } else {
+                                                    //6. Re-insert all selected skills
+                                                    insertskills(resumeskillData, function (err, resul) {
+                                                        if (err) {
+                                                            console.log(err);
+                                                            callback(err, null);
+                                                        } else {
+                                                            callback(null, null);
+                                                        } // End of skill insertion
+                                                    });
+                                                } // End of skill deletion
+                                            });
+                                        } // End of school insertion
+                                    });
+                                } // end of school deletion
+                            });
+                        } // end of company insertion
+                    });
+                } // end of company deletion
+            });
+        } // end of resume update
     });
 };

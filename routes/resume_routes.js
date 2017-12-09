@@ -86,7 +86,7 @@ router.get('/edit', function(req, res){
     }
     else {
         resume_dal.edit(req.query.resume_id, function(err, result){
-            res.render('resume/resumeUpdate', {resume: result[0][0], company: result[1], school: result[2], skill: result[3] });
+            res.render('resume/resumeUpdate', result);
         });
     }
 

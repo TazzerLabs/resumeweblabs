@@ -1,6 +1,14 @@
 <%- include("../includes/header.ejs", {title:"Add New Resume"}); %>
 <h1>Update Resume: <%= resume[0].resume_name %> </h1>
 
+
+<div class="col-md-12">
+    <div id="message" class="alert alert-success col-md-4">
+        <%= resume[0].resume_name %> was successfully saved. %>
+    </div>
+</div>
+
+
 <form action="/resume/update" method="post">
     <input type="hidden" id="resume_id" name="resume_id" value="<%= resume[0].resume_id %>">
     Resume Name: <input id="resume_name" name="resume_name" type="text" value="<%= resume[0].resume_name %>" />
